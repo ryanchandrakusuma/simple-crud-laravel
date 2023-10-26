@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('purchase_request_id')->references('id')->on('purchase_requests')->onDelete('cascade');
             $table->foreignId('product_id')->references('id')->on('products')->onDelete('cascade');
+            $table->integer('amount')->unsigned();
             $table->integer('price_pcs')->unsigned()->nullable();
             $table->integer('price_total')->unsigned();
             $table->timestamps();
