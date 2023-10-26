@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\WarehouseProduct;
 use DB;
 
 class WarehouseProductTableSeeder extends Seeder
@@ -17,7 +18,6 @@ class WarehouseProductTableSeeder extends Seeder
             ['product_id' => 1, 'warehouse_id' => 1, 'stock' => 100],
             ['product_id' => 2, 'warehouse_id' => 1, 'stock' => 200],
             ['product_id' => 3, 'warehouse_id' => 1, 'stock' => 300],
-            ['product_id' => 4, 'warehouse_id' => 1, 'stock' => 400],
         ]);
     }
 }
