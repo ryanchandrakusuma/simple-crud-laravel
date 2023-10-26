@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\VendorController;
+use App\Http\Controllers\WarehouseController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -29,7 +30,7 @@ Route::middleware('auth')->group(function () {
     Route::put('/customers/{id}', [CustomerController::class, 'update'])->name('customers.update');
     Route::delete('/customers/{id}', [CustomerController::class, 'destroy'])->name('customers.destroy');
 
-    //customers
+    //vendors
     Route::get('/vendors', [VendorController::class, 'index'])->name('vendors.index');
     Route::get('/vendors/{id}/edit', [VendorController::class, 'show'])->name('vendors.edit');
     Route::get('/vendors/create', [VendorController::class, 'create'])->name('vendors.create');
@@ -37,9 +38,13 @@ Route::middleware('auth')->group(function () {
     Route::put('/vendors/{id}', [VendorController::class, 'update'])->name('vendors.update');
     Route::delete('/vendors/{id}', [VendorController::class, 'destroy'])->name('vendors.destroy');
 
-    //invoices
-    Route::get('/invoices', [InvoiceController::class, 'index'])->name('invoices.index');
-    Route::get('/invoices/filter', [InvoiceController::class, 'filter']);
+    //warehouse
+    Route::get('/warehouses', [WarehouseController::class, 'index'])->name('warehouses.index');
+    Route::get('/warehouses/{id}/edit', [WarehouseController::class, 'show'])->name('warehouses.edit');
+    Route::get('/warehouses/create', [WarehouseController::class, 'create'])->name('warehouses.create');
+    Route::post('/warehouses/store', [WarehouseController::class, 'store'])->name('warehouses.store');
+    Route::put('/warehouses/{id}', [WarehouseController::class, 'update'])->name('warehouses.update');
+    Route::delete('/warehouses/{id}', [WarehouseController::class, 'destroy'])->name('warehouses.destroy');    
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
