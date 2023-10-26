@@ -5,6 +5,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\VendorController;
 use App\Http\Controllers\WarehouseController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\TaxController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -53,7 +54,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
     Route::post('/products/store', [ProductController::class, 'store'])->name('products.store');
     Route::put('/products/{id}', [ProductController::class, 'update'])->name('products.update');
-    Route::delete('/products/{id}', [ProductController::class, 'destroy'])->name('products.destroy');     
+    Route::delete('/products/{id}', [ProductController::class, 'destroy'])->name('products.destroy');   
+    
+    //taxes
+    Route::get('/taxes', [TaxController::class, 'index'])->name('taxes.index');
+    Route::get('/taxes/{id}/edit', [TaxController::class, 'show'])->name('taxes.edit');
+    Route::get('/taxes/create', [TaxController::class, 'create'])->name('taxes.create');
+    Route::post('/taxes/store', [TaxController::class, 'store'])->name('taxes.store');
+    Route::put('/taxes/{id}', [TaxController::class, 'update'])->name('taxes.update');
+    Route::delete('/taxes/{id}', [TaxController::class, 'destroy'])->name('taxes.destroy');     
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
