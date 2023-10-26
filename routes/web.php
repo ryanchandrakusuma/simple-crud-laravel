@@ -5,6 +5,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\VendorController;
 use App\Http\Controllers\WarehouseController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\StokGudangController;
 use App\Http\Controllers\TaxController;
 use Illuminate\Support\Facades\Route;
 
@@ -62,7 +63,16 @@ Route::middleware('auth')->group(function () {
     Route::get('/taxes/create', [TaxController::class, 'create'])->name('taxes.create');
     Route::post('/taxes/store', [TaxController::class, 'store'])->name('taxes.store');
     Route::put('/taxes/{id}', [TaxController::class, 'update'])->name('taxes.update');
-    Route::delete('/taxes/{id}', [TaxController::class, 'destroy'])->name('taxes.destroy');     
+    Route::delete('/taxes/{id}', [TaxController::class, 'destroy'])->name('taxes.destroy');  
+    
+    //stok-gudang
+    Route::get('/stok-gudang', [StokGudangController::class, 'index'])->name('stok-gudang.index');
+    Route::get('/stok-gudang/{id}/edit', [StokGudangController::class, 'show'])->name('stok-gudang.edit');
+    Route::get('/stok-gudang/create', [StokGudangController::class, 'create'])->name('stok-gudang.create');
+    Route::post('/stok-gudang/store', [StokGudangController::class, 'store'])->name('stok-gudang.store');
+    Route::put('/stok-gudang/{id}', [StokGudangController::class, 'update'])->name('stok-gudang.update');
+    Route::delete('/stok-gudang/{id}', [StokGudangController::class, 'destroy'])->name('stok-gudang.destroy');
+    Route::get('/stok-gudang/filterByWarehouse', [StokGudangController::class, 'filter']);      
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

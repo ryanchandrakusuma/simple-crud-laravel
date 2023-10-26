@@ -47,6 +47,12 @@
                     </x-nav-link>
                 </div>
 
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <x-nav-link :href="route('stok-gudang.index')" :active="request()->routeIs('stok-gudang.index')">
+                        {{ __('Stok Gudang') }}
+                    </x-nav-link>
+                </div>
+
             </div>
 
             <!-- Settings Dropdown -->
