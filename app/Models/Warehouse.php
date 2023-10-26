@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Warehouse extends Model
 {
     use HasFactory;
+
+    public function products(){
+        return $this->belongsToMany(Products::class, 'warehouses_products', 'product_id', 'warehouse_id');
+    }
 }
