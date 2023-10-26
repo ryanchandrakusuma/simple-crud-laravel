@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('purchase_requests', function (Blueprint $table) {
             $table->id();
             $table->text('note')->nullable();
+            $table->foreignId('vendor_id')->references('id')->on('vendors')->onDelete('cascade');
             $table->enum('status', ['Approved', 'Pending', 'Rejected']);
             $table->timestamps();
             $table->softDeletes();
