@@ -2,10 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CustomerController;
-use App\Http\Controllers\ProfessionController;
-use App\Http\Controllers\ProjectController;
-use App\Http\Controllers\ServiceController;
-use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\VendorController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/dashboard', function () {
+Route::get('/', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
@@ -31,6 +28,14 @@ Route::middleware('auth')->group(function () {
     Route::post('/customers/store', [CustomerController::class, 'store'])->name('customers.store');
     Route::put('/customers/{id}', [CustomerController::class, 'update'])->name('customers.update');
     Route::delete('/customers/{id}', [CustomerController::class, 'destroy'])->name('customers.destroy');
+
+    //customers
+    Route::get('/vendors', [VendorController::class, 'index'])->name('vendors.index');
+    Route::get('/vendors/{id}/edit', [VendorController::class, 'show'])->name('vendors.edit');
+    Route::get('/vendors/create', [VendorController::class, 'create'])->name('vendors.create');
+    Route::post('/vendors/store', [VendorController::class, 'store'])->name('vendors.store');
+    Route::put('/vendors/{id}', [VendorController::class, 'update'])->name('vendors.update');
+    Route::delete('/vendors/{id}', [VendorController::class, 'destroy'])->name('vendors.destroy');
 
     //invoices
     Route::get('/invoices', [InvoiceController::class, 'index'])->name('invoices.index');
