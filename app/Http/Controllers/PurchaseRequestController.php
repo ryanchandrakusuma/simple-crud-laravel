@@ -30,11 +30,21 @@ class PurchaseRequestController extends Controller
         return view('purchase-request.index', [
             'purchaseRequests' => $purchaseRequests,
         ]);
-    }
+    } 
 
     //for purchaseRequest page based on id
     public function show($id){
+        $pr = $this->purchaseRequestRepository->getById($id);
+        $vendors = $this->vendorRepository->get();
+        $taxes = $this->taxRepository->get();
+        $products = $this->productRepository->get();
 
+        return view('purchase-request.edit', [
+            'purchase_request' => $pr,
+            'vendors' => $vendors,
+            'taxes' => $taxes,
+            'products' => $products,
+        ]);
     }
 
     //for purchaseRequest creation page
@@ -72,7 +82,15 @@ class PurchaseRequestController extends Controller
     }
 
     public function update(Request $request, $id){
+        //perform update if validated
+        $purchaseRequest = $this->purchaseRequestRepository->update($request, $id);
 
+        //null means the id is wrong
+        if ($purchaseRequest == null){
+            return redirect()->route('purchase-request.edit', ['id' => $id])->with('errors', 'Invalid ID.');
+        }
+
+        return redirect()->route('purchase-request.edit', ['id' => $id])->with('success', 'Update Success!');
     }
     
     public function destroy($id){

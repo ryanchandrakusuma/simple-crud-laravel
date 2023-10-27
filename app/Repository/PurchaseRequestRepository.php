@@ -48,16 +48,66 @@ class PurchaseRequestRepository implements PurchaseRequestRepositoryInterface
     }
 
     public function get(){
-        return PurchaseRequest::with('vendor', 'tax')->get();
+        return PurchaseRequest::with('vendor', 'tax', 'details.product')->get();
     }
 
     public function getById($id){
-
+        return PurchaseRequest::with('vendor', 'tax', 'details.product')->where('id', $id)->first();
     }
 
-    public function update(Request $request, $id){
+    public function update(Request $request, $id)
+    {
+        $purchaseRequest = PurchaseRequest::find($id);
+        $purchaseRequest->vendor_id = $request->vendor_id;
+        $purchaseRequest->tax_id = $request->tax_id;
+        $purchaseRequest->status = $request->status;
+    
+        $originalDetails = $purchaseRequest->details;
+    
+        $existingDetails = [];
+        $newlyAddedDetails = [];
 
+        foreach ($request->selected_products as $index => $productId) {
+            $prDetails = new PurchaseRequestDetail;
+            $prDetails->product_id = $productId;
+            $prDetails->amount = $request->amount[$index];
+            $prDetails->price_pcs = $request->pricePcs[$index];
+            $prDetails->price_total = $request->priceTotal[$index];
+    
+            $originalDetail = $originalDetails->where('product_id', $productId)->first();
+    
+            if ($originalDetail) {
+                $existingDetails[] = $prDetails;
+    
+                $originalDetail->amount = $prDetails->amount;
+                $originalDetail->price_pcs = $prDetails->price_pcs;
+                $originalDetail->price_total = $prDetails->price_total;
+                $originalDetail->save();
+            } else {
+                $newlyAddedDetails[] = $prDetails;
+            }
+        }
+    
+        foreach ($originalDetails as $originalDetail) {
+            if (!in_array($originalDetail->product_id, $request->selected_products)) {
+                $originalDetail->delete();
+            }
+        }
+    
+        $purchaseRequest->details()->saveMany($newlyAddedDetails);
+    
+        $totalPrice = $purchaseRequest->details->sum('price_total');
+    
+        $tax = Tax::find($request->tax_id);
+        $purchaseRequest->price_total = $totalPrice * (1 + ($tax->percent / 100));
+    
+        if ($purchaseRequest->save()) {
+            return $purchaseRequest;
+        }
+    
+        return null;
     }
+    
 
     public function delete($id){
 

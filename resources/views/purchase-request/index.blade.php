@@ -86,7 +86,7 @@
                 },
                 dataType: 'json',
                 success: function(data) {
-                    updateTable(data);
+                    updateTable(data, selectedStatus);
                 },
                 error: function(xhr, status, error) {
                     console.error(error);
@@ -94,7 +94,7 @@
             });
         }
 
-        function updateTable(data) {
+        function updateTable(data, selectedStatus) {
             var tableRows = '';
             $.each(data, function(index, row) {
                 tableRows += '<tr>';
@@ -105,9 +105,11 @@
                 tableRows += '<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">' + row
                     .price_total + '</td>';
                 tableRows += '<td class="px-3 py-4 whitespace-nowrap text-right text-sm font-medium">';
-                tableRows += '<a href="' + "{{ route('purchase-request.edit', ['id' => ':id']) }}"
-                    .replace(
-                        ':id', row.id) + '" class="text-indigo-600 hover:text-indigo-900">Edit</a>';
+                if (selectedStatus != "Approved") {
+                    tableRows += '<a href="' + "{{ route('purchase-request.edit', ['id' => ':id']) }}"
+                        .replace(
+                            ':id', row.id) + '" class="text-indigo-600 hover:text-indigo-900">Edit</a>';
+                }
                 tableRows += '<form method="POST" action="' +
                     "{{ route('purchase-request.destroy', ['id' => ':id']) }}".replace(':id', row.id) +
                     '">';
