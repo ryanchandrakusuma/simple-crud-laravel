@@ -20,4 +20,10 @@ class WarehouseProduct extends Model
     {
         return $this->belongsTo(Warehouse::class, 'warehouse_id');
     }
+
+    protected $fillable = [
+        'product_id',
+        'warehouse_id',
+        'stock'
+    ];
 }
