@@ -82,7 +82,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/purchase-request/store', [PurchaseRequestController::class, 'store'])->name('purchase-request.store');
     Route::put('/purchase-request/{id}', [PurchaseRequestController::class, 'update'])->name('purchase-request.update');
     Route::delete('/purchase-request/{id}', [PurchaseRequestController::class, 'destroy'])->name('purchase-request.destroy');
-    Route::get('/purchase-request/filterByStatus', [PurchaseRequestController::class, 'filter']);    
+    Route::get('/purchase-request/filterByStatus', [PurchaseRequestController::class, 'filter']);
+    Route::put('/purchase-request/{id}/approve', [PurchaseRequestController::class, 'approve'])->name('purchase-request.approve');;    
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

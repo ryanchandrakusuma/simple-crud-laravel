@@ -16,6 +16,16 @@
                         </div>
                     @endif
 
+                    <form method="POST" action="{{ route('purchase-request.approve', $purchase_request->id) }}"
+                        {{ $purchase_request->status != 'Pending' ? 'hidden' : '' }}>
+                        @csrf
+                        @method('PUT')
+                        <input type="hidden" name="status" id="status" value="Approved">
+                        <x-secondary-button class="mt-6" type="submit">
+                            {{ __('Approve') }}
+                        </x-secondary-button>
+                    </form>
+
                     <form method="POST" action="{{ route('purchase-request.update', $purchase_request->id) }}">
                         @csrf
                         @method('put')
@@ -47,6 +57,9 @@
                                 class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                                 <option value="Pending" @if ($purchase_request->status === 'Pending') selected @endif>
                                     Pending
+                                </option>
+                                <option value="Approved" @if ($purchase_request->status === 'Approved') selected @endif>
+                                    Approved
                                 </option>
                                 <option value="Rejected" @if ($purchase_request->status === 'Rejected') selected @endif>
                                     Rejected
@@ -88,6 +101,7 @@
                             {{ __('Update') }}
                         </x-secondary-button>
                     </form>
+
                 </div>
             </div>
         </div>
