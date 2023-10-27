@@ -4,9 +4,11 @@ namespace App\Repository;
 
 use Illuminate\Http\Request;
 use App\Interfaces\PurchaseRequestRepositoryInterface;
-use App\Models\PurchaseRequestDetail;
+use App\Models\Transaction;
+use App\Models\PurchaseRequestDetail;   
 use App\Models\PurchaseRequest;
 use App\Models\Tax;
+use App\Models\WarehouseProduct;
 
 class PurchaseRequestRepository implements PurchaseRequestRepositoryInterface
 {
@@ -117,6 +119,44 @@ class PurchaseRequestRepository implements PurchaseRequestRepositoryInterface
         return PurchaseRequest::with('vendor', 'tax')
         ->where('status', $status)
         ->get();
+    }
+
+    public function updateStatusToApproved($id){
+        $purchaseRequest = PurchaseRequest::find($id);
+        $purchaseRequest->status = "Approved";
+
+        $transaction = new Transaction;
+        $transaction->purchase_request_id = $purchaseRequest->id;
+        $transaction->nominal = $purchaseRequest->price_total;
+        $transaction->sales_request_id = null;
+        $transaction->save();
+
+        foreach ($purchaseRequest->details as $detail){
+            $warehouseProduct = WarehouseProduct::where([
+                'product_id' => $detail->product_id,
+                'warehouse_id' => 1,
+            ])->first();
+
+            if ($warehouseProduct){
+                $warehouseProduct->stock += $detail->amount;
+            }
+            else{
+                $warehouseProduct = new WarehouseProduct;
+                $warehouseProduct->warehouse_id = 1;
+                $warehouseProduct->product_id = $detail->product_id;
+                $warehouseProduct->stock = $detail->amount;
+            }
+
+            $warehouseProduct->save();
+        }
+
+        
+
+        if ($purchaseRequest->save()) {
+            return $purchaseRequest;
+        }
+    
+        return null;
     }
 
 }

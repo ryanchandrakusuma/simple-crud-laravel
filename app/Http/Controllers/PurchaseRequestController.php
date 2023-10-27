@@ -96,4 +96,16 @@ class PurchaseRequestController extends Controller
     public function destroy($id){
 
     }
+
+    public function approve($id){
+        //perform update if validated
+        $purchaseRequest = $this->purchaseRequestRepository->updateStatusToApproved($id);
+
+        //null means the id is wrong
+        if ($purchaseRequest == null){
+            return redirect()->route('purchase-request.edit', ['id' => $id])->with('errors', 'Invalid ID.');
+        }
+
+        return redirect()->route('purchase-request.edit', ['id' => $id])->with('success', 'Update Success!');
+    }
 }
