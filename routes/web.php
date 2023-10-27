@@ -6,6 +6,7 @@ use App\Http\Controllers\VendorController;
 use App\Http\Controllers\WarehouseController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\StokGudangController;
+use App\Http\Controllers\PurchaseRequestController;
 use App\Http\Controllers\TaxController;
 use Illuminate\Support\Facades\Route;
 
@@ -72,7 +73,16 @@ Route::middleware('auth')->group(function () {
     Route::post('/stok-gudang/store', [StokGudangController::class, 'store'])->name('stok-gudang.store');
     Route::put('/stok-gudang/{id}', [StokGudangController::class, 'update'])->name('stok-gudang.update');
     Route::delete('/stok-gudang/{id}', [StokGudangController::class, 'destroy'])->name('stok-gudang.destroy');
-    Route::get('/stok-gudang/filterByWarehouse', [StokGudangController::class, 'filter']);      
+    Route::get('/stok-gudang/filterByWarehouse', [StokGudangController::class, 'filter']); 
+    
+    //purchase-request
+    Route::get('/purchase-request', [PurchaseRequestController::class, 'index'])->name('purchase-request.index');
+    Route::get('/purchase-request/{id}/edit', [PurchaseRequestController::class, 'show'])->name('purchase-request.edit');
+    Route::get('/purchase-request/create', [PurchaseRequestController::class, 'create'])->name('purchase-request.create');
+    Route::post('/purchase-request/store', [PurchaseRequestController::class, 'store'])->name('purchase-request.store');
+    Route::put('/purchase-request/{id}', [PurchaseRequestController::class, 'update'])->name('purchase-request.update');
+    Route::delete('/purchase-request/{id}', [PurchaseRequestController::class, 'destroy'])->name('purchase-request.destroy');
+    Route::get('/purchase-request/filterByStatus', [PurchaseRequestController::class, 'filter']);    
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
