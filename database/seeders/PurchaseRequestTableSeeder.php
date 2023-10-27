@@ -13,9 +13,12 @@ class PurchaseRequestTableSeeder extends Seeder
      */
     public function run(): void
     {
+        DB::table('taxes')->insert([
+            ['name' => 'pph', 'percent' => 10],
+        ]);
+
         DB::table('purchase_requests')->insert([
-            ['vendor_id' => 1, 'status' => 'Pending'],
-            ['vendor_id' => 2, 'status' => 'Rejected'],
+            ['vendor_id' => 1, 'status' => 'Pending', 'tax_id' => 1, 'price_total' => 6600000],
         ]);
 
         DB::table('purchase_request_details')->insert([
