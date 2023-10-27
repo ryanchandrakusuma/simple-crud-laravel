@@ -16,6 +16,8 @@ return new class extends Migration
             $table->text('note')->nullable();
             $table->foreignId('vendor_id')->references('id')->on('vendors')->onDelete('cascade');
             $table->enum('status', ['Approved', 'Pending', 'Rejected']);
+            $table->foreignId('tax_id')->references('id')->on('taxes')->onDelete('cascade')->nullable();
+            $table->integer('price_total')->unsigned();
             $table->timestamps();
             $table->softDeletes();
         });
